@@ -1,0 +1,4 @@
+name: Horadric-Cube
+version: '${version}'
+main: com.coffee.sashie.horadriccube.Horadric_Cube
+api-version: '1.20'
