@@ -1,6 +1,6 @@
 package com.coffee.sashie.horadriccube.api;
 
-import me.sashie.skriptyaml.SkriptYaml;
+import com.coffee.sashie.horadriccube.HoradricCube;
 import org.yaml.snakeyaml.constructor.AbstractConstruct;
 import org.yaml.snakeyaml.nodes.MappingNode;
 import org.yaml.snakeyaml.nodes.Node;
@@ -25,7 +25,7 @@ public abstract class ConstructedClass<T> extends AbstractConstruct {
 	
 	@Override
 	public Object construct(Node node) {
-		final Map<Object, Object> values = SkriptYaml.getInstance().getConstructor().constructMap((MappingNode) node);
+		final Map<Object, Object> values = HoradricCube.getInstance().getConstructor().constructMap((MappingNode) node);
 		return construct(values);
 	}
 }

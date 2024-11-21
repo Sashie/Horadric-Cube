@@ -10,10 +10,10 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.log.SkriptLogger;
 import ch.njol.util.Kleenean;
-import me.sashie.skriptyaml.SkriptYaml;
-import me.sashie.skriptyaml.debug.SkriptNode;
-import me.sashie.skriptyaml.utils.StringUtil;
-import me.sashie.skriptyaml.utils.yaml.YAMLProcessor;
+import com.coffee.sashie.horadriccube.debug.SkriptNode;
+import com.coffee.sashie.horadriccube.utils.SkriptYamlUtils;
+import com.coffee.sashie.horadriccube.utils.StringUtil;
+import com.coffee.sashie.horadriccube.utils.yaml.YAMLProcessor;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
@@ -44,15 +44,15 @@ public class EffUnloadYaml extends Effect {
 		for (String name : this.file.getAll(event)) {
 			if (mark == 1) {
 				String server = new File("").getAbsoluteFile().getAbsolutePath() + File.separator;
-				for (Iterator<Entry<String, YAMLProcessor>> it = SkriptYaml.YAML_STORE.entrySet().iterator(); it.hasNext();) {
+				for (Iterator<Entry<String, YAMLProcessor>> it = SkriptYamlUtils.YAML_STORE.entrySet().iterator(); it.hasNext();) {
 					String path = it.next().getValue().getParentPath();
-					if (path.equals(server + StringUtil.checkSeparator(name))) 
+					if (path.equals(server + StringUtil.checkSeparator(name)))
 						it.remove();
 				}
 			} else {
-				if (!SkriptYaml.YAML_STORE.containsKey(name)) 
+				if (!SkriptYamlUtils.YAML_STORE.containsKey(name))
 					continue;
-				SkriptYaml.YAML_STORE.remove(name);
+				SkriptYamlUtils.YAML_STORE.remove(name);
 			}
 		}
 	}

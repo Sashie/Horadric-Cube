@@ -10,12 +10,11 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.log.SkriptLogger;
 import ch.njol.util.Kleenean;
-import me.sashie.skriptyaml.SkriptYaml;
-import me.sashie.skriptyaml.debug.SkriptNode;
-import me.sashie.skriptyaml.utils.SkriptYamlUtils;
-import me.sashie.skriptyaml.utils.StringUtil;
-import me.sashie.skriptyaml.utils.yaml.YAMLFormat;
-import me.sashie.skriptyaml.utils.yaml.YAMLProcessor;
+import com.coffee.sashie.horadriccube.debug.SkriptNode;
+import com.coffee.sashie.horadriccube.utils.SkriptYamlUtils;
+import com.coffee.sashie.horadriccube.utils.StringUtil;
+import com.coffee.sashie.horadriccube.utils.yaml.YAMLFormat;
+import com.coffee.sashie.horadriccube.utils.yaml.YAMLProcessor;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
@@ -61,9 +60,9 @@ public class EffLoadYamlDirectory extends Effect {
 					e.printStackTrace();
 				} finally {
 					if (matchedPattern == 1)
-						SkriptYaml.YAML_STORE.put(StringUtil.stripExtention(yamlFile.getName()), yaml);
+						SkriptYamlUtils.YAML_STORE.put(StringUtil.stripExtention(yamlFile.getName()), yaml);
 					else
-						SkriptYaml.YAML_STORE.put(StringUtil.checkLastSeparator(name) + yamlFile.getName(), yaml);
+						SkriptYamlUtils.YAML_STORE.put(StringUtil.checkLastSeparator(name) + yamlFile.getName(), yaml);
 				}
 			}
 		}

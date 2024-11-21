@@ -1,6 +1,6 @@
 package com.coffee.sashie.horadriccube.api;
 
-import me.sashie.skriptyaml.SkriptYaml;
+import com.coffee.sashie.horadriccube.HoradricCube;
 import org.yaml.snakeyaml.nodes.Node;
 import org.yaml.snakeyaml.nodes.Tag;
 import org.yaml.snakeyaml.representer.Represent;
@@ -28,6 +28,6 @@ public abstract class RepresentedClass<T> implements Represent {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Node representData(Object data) {
-		return SkriptYaml.getInstance().getRepresenter().representMapping(new Tag("!" + this.tag), represent((T) data));
+		return HoradricCube.getInstance().getRepresenter().representMapping(new Tag("!" + this.tag), represent((T) data));
 	}
 }

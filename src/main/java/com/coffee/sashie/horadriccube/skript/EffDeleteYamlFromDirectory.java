@@ -9,11 +9,10 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.log.SkriptLogger;
 import ch.njol.util.Kleenean;
-import me.sashie.skriptyaml.AsyncEffectOld;
-import me.sashie.skriptyaml.SkriptYaml;
-import me.sashie.skriptyaml.debug.SkriptNode;
-import me.sashie.skriptyaml.utils.SkriptYamlUtils;
-import me.sashie.skriptyaml.utils.StringUtil;
+import com.coffee.sashie.horadriccube.debug.SkriptNode;
+import com.coffee.sashie.horadriccube.utils.AsyncEffectOld;
+import com.coffee.sashie.horadriccube.utils.SkriptYamlUtils;
+import com.coffee.sashie.horadriccube.utils.StringUtil;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
@@ -57,9 +56,9 @@ public class EffDeleteYamlFromDirectory extends AsyncEffectOld {
 				} else if (matchedPattern == 1) {
 					n = StringUtil.stripExtention(yamlFile.getName());
 				}
-				if (SkriptYaml.YAML_STORE.containsKey(n)) {
-					SkriptYaml.YAML_STORE.get(n).getFile().delete();
-					SkriptYaml.YAML_STORE.remove(n);
+				if (SkriptYamlUtils.YAML_STORE.containsKey(n)) {
+					SkriptYamlUtils.YAML_STORE.get(n).getFile().delete();
+					SkriptYamlUtils.YAML_STORE.remove(n);
 				}
 			}
 		}

@@ -17,11 +17,11 @@ import ch.njol.skript.registrations.Converters;
 import ch.njol.skript.util.Utils;
 import ch.njol.util.Kleenean;
 import ch.njol.util.coll.iterator.ArrayIterator;
-import me.sashie.skriptyaml.SimpleExpressionFork;
-import me.sashie.skriptyaml.SkriptYaml;
-import me.sashie.skriptyaml.skript.ExprYaml.YamlState;
-import me.sashie.skriptyaml.utils.StringUtil;
-import me.sashie.skriptyaml.utils.versions.wrapper.AbstractLoop;
+import com.coffee.sashie.horadriccube.HoradricCube;
+import com.coffee.sashie.horadriccube.utils.HoradricLogger;
+import com.coffee.sashie.horadriccube.utils.SimpleExpressionFork;
+import com.coffee.sashie.horadriccube.utils.StringUtil;
+import com.coffee.sashie.horadriccube.utils.versions.wrapper.AbstractLoop;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
@@ -51,7 +51,7 @@ public class ExprLoopYaml extends SimpleExpressionFork<Object> {
 	
 	private AbstractLoop loop;
 
-	YamlState yamlState;
+	ExprYaml.YamlState yamlState;
 	LoopState loopState;
 
 	boolean isYamlLoop = false;
@@ -69,21 +69,21 @@ public class ExprLoopYaml extends SimpleExpressionFork<Object> {
 			i = ((Literal<Integer>) number).getSingle().intValue();
 		}
 
-		AbstractLoop loop = SkriptYaml.getInstance().getSkriptAdapter().getLoop(i, s);
+		AbstractLoop loop = HoradricCube.getInstance().getSkriptAdapter().getLoop(i, s);
 
 		if (loop == null) {
-			SkriptYaml.error("There are multiple loops that match loop-" + s + ". Use loop-" + s + "-1/2/3/etc. to specify which loop's value you want. " + getNodeMsg());
+			HoradricLogger.warn("There are multiple loops that match loop-" + s + ". Use loop-" + s + "-1/2/3/etc. to specify which loop's value you want. " + getNodeMsg());
 			return false;
 		}
 
 		if (loop != null && loop.getObject() == null) {
-			SkriptYaml.error("There's no loop that matches 'loop-" + s + "' " + getNodeMsg());
+			HoradricLogger.warn("There's no loop that matches 'loop-" + s + "' " + getNodeMsg());
 			return false;
 		}
 
 		if (loop.getLoopedExpression() instanceof ExprYaml) {
 			yamlState = ((ExprYaml<?>) loop.getLoopedExpression()).getState();
-			if (!yamlState.equals(YamlState.VALUE)) {
+			if (!yamlState.equals(ExprYaml.YamlState.VALUE)) {
 				if (parser.mark == 7) {
 					loopState = LoopState.INDEX;
 				} else if (parser.mark == 1) {
@@ -93,22 +93,22 @@ public class ExprLoopYaml extends SimpleExpressionFork<Object> {
 				} else if (parser.mark == 3) {
 					loopState = LoopState.LIST;
 				} else if (parser.mark == 4) {
-					if (yamlState.equals(YamlState.LIST))
+					if (yamlState.equals(ExprYaml.YamlState.LIST))
 						return loopStateListError(s);
 					loopState = LoopState.NODE;
 				} else if (parser.mark == 5) {
-					if (yamlState.equals(YamlState.LIST))
+					if (yamlState.equals(ExprYaml.YamlState.LIST))
 						return loopStateListError(s);
 					loopState = LoopState.NODE_KEY;
 				} else if (parser.mark == 6) {
-					if (yamlState.equals(YamlState.LIST))
+					if (yamlState.equals(ExprYaml.YamlState.LIST))
 						return loopStateListError(s);
 					loopState = LoopState.SUB_NODE_KEYS;
 				}
 			}
 			isYamlLoop = true;
 		} else {
-			SkriptYaml.error("A 'loop-" + s + "' can only be used in a yaml expression loop ie. 'loop yaml node keys \"node\" from \"config\"' " + getNodeMsg());
+			HoradricLogger.warn("A 'loop-" + s + "' can only be used in a yaml expression loop ie. 'loop yaml node keys \"node\" from \"config\"' " + getNodeMsg());
 			return false;
 		}
 
@@ -117,7 +117,7 @@ public class ExprLoopYaml extends SimpleExpressionFork<Object> {
 	}
 
 	private boolean loopStateListError(String s) {
-		SkriptYaml.error("There's no 'loop-" + s + "' in a yaml list " + getNodeMsg());
+		HoradricLogger.warn("There's no 'loop-" + s + "' in a yaml list " + getNodeMsg());
 		return false;
 	}
 
@@ -131,9 +131,9 @@ public class ExprLoopYaml extends SimpleExpressionFork<Object> {
 
 	@Override
 	public boolean isSingle() {
-		if (loopState == LoopState.VALUE && yamlState == YamlState.LIST)
+		if (loopState == LoopState.VALUE && yamlState == ExprYaml.YamlState.LIST)
 			return true;
-		return yamlState == YamlState.VALUE;
+		return yamlState == ExprYaml.YamlState.VALUE;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -149,7 +149,7 @@ public class ExprLoopYaml extends SimpleExpressionFork<Object> {
 					return Converters.convert(o, to);
 				}
 			};
-			return SkriptYaml.getInstance().getSkriptAdapter().getConvertedExpr(this, superType, converter);
+			return HoradricCube.getInstance().getSkriptAdapter().getConvertedExpr(this, superType, converter);
 		} else {
 			return super.getConvertedExpr(to);
 		}
@@ -179,26 +179,26 @@ public class ExprLoopYaml extends SimpleExpressionFork<Object> {
 				case ID:
 					return new String[] {yamlExpr.getId(e)};	
 				case VALUE:
-					if (yamlState.equals(YamlState.LIST))
+					if (yamlState.equals(ExprYaml.YamlState.LIST))
 						return new Object[] {current};
 					String n = getCurrentNode(current, yamlExpr.getNode(e));
 					if (n == null)
 						return null;
-					return yamlExpr.get(e, n, YamlState.VALUE);
+					return yamlExpr.get(e, n, ExprYaml.YamlState.VALUE);
 				case LIST:
 					String n2 = getCurrentNode(current, yamlExpr.getNode(e));
 					if (n2 == null)
 						return null;
-					return yamlExpr.get(e, n2, YamlState.LIST);
+					return yamlExpr.get(e, n2, ExprYaml.YamlState.LIST);
 				case NODE:
-					if (yamlState.equals(YamlState.NODE_KEYS))
+					if (yamlState.equals(ExprYaml.YamlState.NODE_KEYS))
 						return new String[] {StringUtil.addLastNodeSeperator(yamlExpr.getNode(e)) + current};
-					else if (yamlState.equals(YamlState.NODES))
+					else if (yamlState.equals(ExprYaml.YamlState.NODES))
 						return new String[] {current.toString()};
 				case NODE_KEY:
-					if (yamlState.equals(YamlState.NODE_KEYS))
+					if (yamlState.equals(ExprYaml.YamlState.NODE_KEYS))
 						return new String[] {current.toString()};
-					else if (yamlState.equals(YamlState.NODES))
+					else if (yamlState.equals(ExprYaml.YamlState.NODES))
 						return new String[] {StringUtil.stripBeforeLastNode(current.toString())};
 				case SUB_NODE_KEYS:
 					String n3 = getCurrentNode(current, yamlExpr.getNode(e));
@@ -217,9 +217,9 @@ public class ExprLoopYaml extends SimpleExpressionFork<Object> {
 
 	private String getCurrentNode(Object current, String node) {
 		String key = null;
-		if (yamlState.equals(YamlState.NODE_KEYS))
+		if (yamlState.equals(ExprYaml.YamlState.NODE_KEYS))
 			key = StringUtil.addLastNodeSeperator(node) + current;
-		else if (yamlState.equals(YamlState.NODES))
+		else if (yamlState.equals(ExprYaml.YamlState.NODES))
 			key = current.toString();
 		return key;
 	}

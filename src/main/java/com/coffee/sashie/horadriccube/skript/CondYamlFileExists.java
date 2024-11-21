@@ -9,7 +9,7 @@ import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
-import me.sashie.skriptyaml.utils.StringUtil;
+import com.coffee.sashie.horadriccube.utils.StringUtil;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;

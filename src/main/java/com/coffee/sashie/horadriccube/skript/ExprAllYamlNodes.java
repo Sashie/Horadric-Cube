@@ -11,8 +11,8 @@ import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
-import me.sashie.skriptyaml.SkriptYaml;
-import me.sashie.skriptyaml.utils.yaml.YAMLProcessor;
+import com.coffee.sashie.horadriccube.utils.SkriptYamlUtils;
+import com.coffee.sashie.horadriccube.utils.yaml.YAMLProcessor;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
@@ -58,12 +58,12 @@ public class ExprAllYamlNodes extends SimpleExpression<String> {
 
 		final String name = this.file.getSingle(event);
 
-		if (!SkriptYaml.YAML_STORE.containsKey(name)) {
+		if (!SkriptYamlUtils.YAML_STORE.containsKey(name)) {
 			//SkriptYaml.warn("No yaml file by the name '" + name + "' has been loaded");
 			return null;
 		}
 
-		YAMLProcessor config = SkriptYaml.YAML_STORE.get(name);
+		YAMLProcessor config = SkriptYamlUtils.YAML_STORE.get(name);
 
 		List<String> nodes = config.getAllKeys();
 		if (nodes != null)

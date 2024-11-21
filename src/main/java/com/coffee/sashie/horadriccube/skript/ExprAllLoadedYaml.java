@@ -11,9 +11,9 @@ import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
-import me.sashie.skriptyaml.SkriptYaml;
-import me.sashie.skriptyaml.utils.StringUtil;
-import me.sashie.skriptyaml.utils.yaml.YAMLProcessor;
+import com.coffee.sashie.horadriccube.utils.SkriptYamlUtils;
+import com.coffee.sashie.horadriccube.utils.StringUtil;
+import com.coffee.sashie.horadriccube.utils.yaml.YAMLProcessor;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
@@ -81,9 +81,9 @@ public class ExprAllLoadedYaml extends SimpleExpression<String> {
 	protected String[] get(Event event) {
 		if (matchedPattern == 0) {
 			if (directory == null) {
-				if (SkriptYaml.YAML_STORE.isEmpty())
+				if (SkriptYamlUtils.YAML_STORE.isEmpty())
 					return null;
-				return SkriptYaml.YAML_STORE.keySet().toArray(new String[SkriptYaml.YAML_STORE.keySet().size()]);
+				return SkriptYamlUtils.YAML_STORE.keySet().toArray(new String[SkriptYamlUtils.YAML_STORE.keySet().size()]);
 			} else {
 				return getYamlFromDirectories(directory.getAll(event));
 			}
@@ -103,7 +103,7 @@ public class ExprAllLoadedYaml extends SimpleExpression<String> {
 			else
 				filter.add(server + StringUtil.stripLastSeparator(StringUtil.checkSeparator(d)));
 		}
-		for (Iterator<Entry<String, YAMLProcessor>> it = SkriptYaml.YAML_STORE.entrySet().iterator(); it.hasNext();) {
+		for (Iterator<Entry<String, YAMLProcessor>> it = SkriptYamlUtils.YAML_STORE.entrySet().iterator(); it.hasNext();) {
 			Entry<String, YAMLProcessor> entry = it.next();
 			if (filter.contains(entry.getValue().getParentPath())) {
 				String id = entry.getKey();
@@ -119,7 +119,7 @@ public class ExprAllLoadedYaml extends SimpleExpression<String> {
 
 	private String[] getAllDirectories() {
 		List<String> yamlDirectories = new ArrayList<String>();
-		for (Iterator<Entry<String, YAMLProcessor>> it = SkriptYaml.YAML_STORE.entrySet().iterator(); it.hasNext();) {
+		for (Iterator<Entry<String, YAMLProcessor>> it = SkriptYamlUtils.YAML_STORE.entrySet().iterator(); it.hasNext();) {
 			String path = it.next().getValue().getParentPath();
 			if (!yamlDirectories.contains(path))
 				yamlDirectories.add(path);

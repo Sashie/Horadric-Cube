@@ -14,10 +14,10 @@ import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.skript.log.SkriptLogger;
 import ch.njol.util.Kleenean;
 import ch.njol.util.coll.CollectionUtils;
-import me.sashie.skriptyaml.SkriptYaml;
-import me.sashie.skriptyaml.debug.SkriptNode;
-import me.sashie.skriptyaml.utils.SkriptYamlUtils;
-import me.sashie.skriptyaml.utils.yaml.YAMLProcessor;
+import com.coffee.sashie.horadriccube.debug.SkriptNode;
+import com.coffee.sashie.horadriccube.utils.HoradricLogger;
+import com.coffee.sashie.horadriccube.utils.SkriptYamlUtils;
+import com.coffee.sashie.horadriccube.utils.yaml.YAMLProcessor;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
@@ -84,7 +84,7 @@ public class ExprYamlComments extends SimpleExpression<Object> {
 		if (!SkriptYamlUtils.yamlExists(name, skriptNode))
 			return null;
 
-		YAMLProcessor config = SkriptYaml.YAML_STORE.get(name);
+		YAMLProcessor config = SkriptYamlUtils.YAML_STORE.get(name);
 
 		String s = null;
 		if (state == States.COMMENT) {
@@ -106,7 +106,7 @@ public class ExprYamlComments extends SimpleExpression<Object> {
 		if (!SkriptYamlUtils.yamlExists(name, skriptNode))
 			return;
 
-		YAMLProcessor config = SkriptYaml.YAML_STORE.get(name);
+		YAMLProcessor config = SkriptYamlUtils.YAML_STORE.get(name);
 
 		if (state == States.COMMENT) {
 			paths = this.paths.getAll(event);
@@ -117,9 +117,9 @@ public class ExprYamlComments extends SimpleExpression<Object> {
 						if (config.getMap().containsKey(p))
 							config.setComment(p, this.mark == 1 ? true : false, toStringArray(delta, comments));
 						else
-							SkriptYaml.warn("'" + p + "' is not a valid path in '" + name + "' " + skriptNode.toString());
+							HoradricLogger.warn("'" + p + "' is not a valid path in '" + name + "' " + skriptNode.toString());
 					} else {
-						SkriptYaml.warn("Comments can only be added to root paths not '" + p + "' in '" + name + "' " + skriptNode.toString());
+						HoradricLogger.warn("Comments can only be added to root paths not '" + p + "' in '" + name + "' " + skriptNode.toString());
 					}
 				}
 			} else if (mode == ChangeMode.DELETE || mode == ChangeMode.RESET) {

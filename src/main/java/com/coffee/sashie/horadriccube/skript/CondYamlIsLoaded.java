@@ -10,7 +10,7 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Checker;
 import ch.njol.util.Kleenean;
-import me.sashie.skriptyaml.SkriptYaml;
+import com.coffee.sashie.horadriccube.utils.SkriptYamlUtils;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
@@ -38,7 +38,7 @@ public class CondYamlIsLoaded extends Condition {
 		return file.check(event, new Checker<String>() {
 			@Override
 			public boolean check(final String s) {
-				if (!SkriptYaml.YAML_STORE.containsKey(s))
+				if (!SkriptYamlUtils.YAML_STORE.containsKey(s))
 					return false;
 				return true;
 			}

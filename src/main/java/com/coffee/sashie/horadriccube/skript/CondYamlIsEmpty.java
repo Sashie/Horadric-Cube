@@ -9,7 +9,7 @@ import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Kleenean;
-import me.sashie.skriptyaml.SkriptYaml;
+import com.coffee.sashie.horadriccube.utils.SkriptYamlUtils;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
@@ -34,9 +34,9 @@ public class CondYamlIsEmpty extends Condition {
 
 	@Override
 	public boolean check(final Event event) {
-		if (!SkriptYaml.YAML_STORE.containsKey(file.getSingle(event)))
+		if (!SkriptYamlUtils.YAML_STORE.containsKey(file.getSingle(event)))
 			return false;
-		return SkriptYaml.YAML_STORE.get(file.getSingle(event)).getAllKeys().isEmpty() ^ isNegated();
+		return SkriptYamlUtils.YAML_STORE.get(file.getSingle(event)).getAllKeys().isEmpty() ^ isNegated();
 	}
 
 	@Override

@@ -10,11 +10,12 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.log.SkriptLogger;
 import ch.njol.util.Kleenean;
-import me.sashie.skriptyaml.SkriptYaml;
-import me.sashie.skriptyaml.debug.SkriptNode;
-import me.sashie.skriptyaml.utils.StringUtil;
-import me.sashie.skriptyaml.utils.yaml.YAMLFormat;
-import me.sashie.skriptyaml.utils.yaml.YAMLProcessor;
+import com.coffee.sashie.horadriccube.debug.SkriptNode;
+import com.coffee.sashie.horadriccube.utils.HoradricLogger;
+import com.coffee.sashie.horadriccube.utils.SkriptYamlUtils;
+import com.coffee.sashie.horadriccube.utils.StringUtil;
+import com.coffee.sashie.horadriccube.utils.yaml.YAMLFormat;
+import com.coffee.sashie.horadriccube.utils.yaml.YAMLProcessor;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
@@ -56,7 +57,7 @@ public class EffLoadYaml extends Effect {
 	protected void execute(@Nullable Event event) {
 		if (matchedPattern == 1) {
 			if (!this.file.isSingle()) {
-				SkriptYaml.warn("[Load Yaml] Input has to be single if using a custom id " + skriptNode.toString());
+				HoradricLogger.warn("[Load Yaml] Input has to be single if using a custom id " + skriptNode.toString());
 				return;
 			}
 			load(this.file.getSingle(event), event);
@@ -87,7 +88,7 @@ public class EffLoadYaml extends Effect {
 				yamlFile.createNewFile();
 			}
 		} catch (IOException error) {
-			SkriptYaml.error("[Load Yaml] " + error.getMessage() + " (" + name + ") " + skriptNode.toString());
+			HoradricLogger.error(error, "[Load Yaml] " + error.getMessage() + " (" + name + ") " + skriptNode.toString());
 			return;
 		}
 
@@ -105,7 +106,7 @@ public class EffLoadYaml extends Effect {
 				n = this.id.getSingle(event);
 			else if (matchedPattern == 2)
 				n = name;
-			SkriptYaml.YAML_STORE.put(n, yaml);
+			SkriptYamlUtils.YAML_STORE.put(n, yaml);
 		}
 	}
 	

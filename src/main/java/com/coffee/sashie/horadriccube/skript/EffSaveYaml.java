@@ -10,9 +10,10 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.skript.log.SkriptLogger;
 import ch.njol.util.Kleenean;
-import me.sashie.skriptyaml.SkriptYaml;
-import me.sashie.skriptyaml.debug.SkriptNode;
-import me.sashie.skriptyaml.utils.yaml.YAMLProcessor;
+import com.coffee.sashie.horadriccube.debug.SkriptNode;
+import com.coffee.sashie.horadriccube.utils.HoradricLogger;
+import com.coffee.sashie.horadriccube.utils.SkriptYamlUtils;
+import com.coffee.sashie.horadriccube.utils.yaml.YAMLProcessor;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
@@ -41,15 +42,15 @@ public class EffSaveYaml extends Effect {
 	@Override
 	protected void execute(@Nullable Event event) {
 		for (String name : this.file.getAll(event)) {
-			if (!SkriptYaml.YAML_STORE.containsKey(name))
+			if (!SkriptYamlUtils.YAML_STORE.containsKey(name))
 				continue;
-			YAMLProcessor yaml = SkriptYaml.YAML_STORE.get(name);
+			YAMLProcessor yaml = SkriptYamlUtils.YAML_STORE.get(name);
 			if (yamlIndent != null)
 				yaml.setIndent(this.yamlIndent.getSingle(event).intValue());
 			try {
 				yaml.save(this.mark == 1 ? false : true);
 			} catch (NullPointerException ex) {
-				SkriptYaml.warn("The yaml '" + name + "' hasnt been populated yet " + skriptNode.toString());
+				HoradricLogger.warn("The yaml '" + name + "' hasnt been populated yet " + skriptNode.toString());
 			}
 			
 		}

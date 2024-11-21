@@ -9,7 +9,7 @@ import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
-import me.sashie.skriptyaml.SkriptYaml;
+import com.coffee.sashie.horadriccube.utils.SkriptYamlUtils;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
@@ -31,10 +31,10 @@ public class EffDeleteYaml extends Effect {
 	@Override
 	protected void execute(@Nullable Event event) {
 		for (String name : this.file.getAll(event)) {
-			if (!SkriptYaml.YAML_STORE.containsKey(name))
+			if (!SkriptYamlUtils.YAML_STORE.containsKey(name))
 				continue;
-			SkriptYaml.YAML_STORE.get(name).getFile().delete();
-			SkriptYaml.YAML_STORE.remove(name);
+			SkriptYamlUtils.YAML_STORE.get(name).getFile().delete();
+			SkriptYamlUtils.YAML_STORE.remove(name);
 		}
 	}
 

@@ -15,13 +15,13 @@ import ch.njol.skript.registrations.Converters;
 import ch.njol.skript.util.Utils;
 import ch.njol.util.Kleenean;
 import ch.njol.util.coll.CollectionUtils;
-import me.sashie.skriptyaml.SimpleExpressionFork;
-import me.sashie.skriptyaml.SkriptYaml;
-import me.sashie.skriptyaml.debug.SkriptNode;
-import me.sashie.skriptyaml.utils.SkriptYamlUtils;
-import me.sashie.skriptyaml.utils.StringUtil;
-import me.sashie.skriptyaml.utils.yaml.YAMLNode;
-import me.sashie.skriptyaml.utils.yaml.YAMLProcessor;
+import com.coffee.sashie.horadriccube.debug.SkriptNode;
+import com.coffee.sashie.horadriccube.utils.HoradricLogger;
+import com.coffee.sashie.horadriccube.utils.SimpleExpressionFork;
+import com.coffee.sashie.horadriccube.utils.SkriptYamlUtils;
+import com.coffee.sashie.horadriccube.utils.StringUtil;
+import com.coffee.sashie.horadriccube.utils.yaml.YAMLNode;
+import com.coffee.sashie.horadriccube.utils.yaml.YAMLProcessor;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Event;
 
@@ -147,7 +147,7 @@ public class ExprYaml<T> extends SimpleExpressionFork<T> {
 		if (!SkriptYamlUtils.yamlExists(name, skriptNode))
 			return null;
 
-		YAMLProcessor config = SkriptYaml.YAML_STORE.get(name);
+		YAMLProcessor config = SkriptYamlUtils.YAML_STORE.get(name);
 
 		if (state == YamlState.VALUE) {
 			Object o = config.getProperty(path);
@@ -225,7 +225,7 @@ public class ExprYaml<T> extends SimpleExpressionFork<T> {
 		if (!SkriptYamlUtils.yamlExists(name, skriptNode))
 			return;
 
-		YAMLProcessor config = SkriptYaml.YAML_STORE.get(name);
+		YAMLProcessor config = SkriptYamlUtils.YAML_STORE.get(name);
 
 		if (mode == ChangeMode.DELETE || mode == ChangeMode.RESET) {
 			config.removeProperty(path, skriptNode);
@@ -251,7 +251,7 @@ public class ExprYaml<T> extends SimpleExpressionFork<T> {
 					config.setProperty(path, arrayToList(objects, delta));
 			} else if (mode == ChangeMode.REMOVE) {
 				if (objects == null) {
-					SkriptYaml.warn("There is no list at path '" + path + "' in yaml '" + name + "' " + skriptNode.toString());
+					HoradricLogger.warn("There is no list at path '" + path + "' in yaml '" + name + "' " + skriptNode.toString());
 					return;
 				}
 				for (Object o : delta)

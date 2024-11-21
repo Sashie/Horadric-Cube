@@ -10,7 +10,7 @@ import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser.ParseResult;
 import ch.njol.util.Checker;
 import ch.njol.util.Kleenean;
-import me.sashie.skriptyaml.SkriptYaml;
+import com.coffee.sashie.horadriccube.utils.SkriptYamlUtils;
 import org.bukkit.event.Event;
 
 import javax.annotation.Nullable;
@@ -43,15 +43,15 @@ public class CondNodeHasValue extends Condition {
 		return path.check(event, new Checker<String>() {
 			@Override
 			public boolean check(final String s) {
-				if (!SkriptYaml.YAML_STORE.containsKey(file.getSingle(event)))
+				if (!SkriptYamlUtils.YAML_STORE.containsKey(file.getSingle(event)))
 					return false;
 				if (path.isSingle())
-					return (SkriptYaml.YAML_STORE.get(file.getSingle(event)).getProperty(path.getSingle(event)) != null);
+					return (SkriptYamlUtils.YAML_STORE.get(file.getSingle(event)).getProperty(path.getSingle(event)) != null);
 				else {
 					String[] paths = (String[]) path.getAll(event);
 					boolean check;
 					for (String p : paths) {
-						check = (SkriptYaml.YAML_STORE.get(file.getSingle(event)).getProperty(p) != null);
+						check = (SkriptYamlUtils.YAML_STORE.get(file.getSingle(event)).getProperty(p) != null);
 						if (!check) {
 							return false;
 						}
